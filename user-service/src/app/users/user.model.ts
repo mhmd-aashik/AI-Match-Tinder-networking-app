@@ -28,4 +28,10 @@ export class User {
 
   @Field({ nullable: true })
   profileImageUrl?: string;
+
+  @Field()
+  createdAt!: Date;
+
+  @Field()
+  updatedAt!: Date;
 }
