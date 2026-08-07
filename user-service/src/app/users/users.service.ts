@@ -3,6 +3,7 @@ import { DRIZZLE_DB, type DrizzleDB } from '../database/database.module';
 import { users } from '../database/schema';
 import { eq } from 'drizzle-orm';
 import { CreateUserInput } from './dto/create-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
 
 @Injectable()
 export class UsersService {
@@ -29,5 +30,18 @@ export class UsersService {
     const result = await this.drizzleDb.insert(users).values(input).returning();
 
     return result[0];
+  }
+
+  async update(id: string, input: UpdateUserInput) {
+    const [user] = await this.drizzleDb
+      .update(users)
+      .set({
+        ...input,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, id))
+      .returning();
+
+    return user;
   }
 }
