@@ -5,6 +5,8 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import type { AuthUser } from '../auth/auth-user.type';
 import { CurrentUser } from '../auth/current-user.decorator';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../auth/gql-auth.guard';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -23,6 +25,7 @@ export class UsersResolver {
     return this.usersService.findById(id);
   }
 
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
   async createUser(
     @CurrentUser() user: AuthUser,
