@@ -1,10 +1,7 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 
-@ObjectType()
-export class User {
-  @Field(() => ID)
-  id!: string;
-
+@InputType()
+export class CreateUserInput {
   @Field()
   keycloakId!: string;
 

@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DRIZZLE_DB, type DrizzleDB } from '../database/database.module';
 import { users } from '../database/schema';
 import { eq } from 'drizzle-orm';
+import { CreateUserInput } from './dto/create-user.input';
 
 @Injectable()
 export class UsersService {
@@ -22,5 +23,11 @@ export class UsersService {
       .limit(1);
 
     return user;
+  }
+
+  async create(input: CreateUserInput) {
+    const result = await this.drizzleDb.insert(users).values(input).returning();
+
+    return result[0];
   }
 }
