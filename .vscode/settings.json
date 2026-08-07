@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    "**/.agents": true,
+    "**/.claude": true,
+    "**/.codex": true,
+    "**/.cursor": true,
+    "**/.gemini": true,
+    "**/.github": true,
+    "**/.nx": true,
+    "**/.opencode": true
+  }
+}
