@@ -21,7 +21,9 @@
     "@swc/helpers": "0.5.18",
     "@swc/jest": "~0.2.38",
     "@types/jest": "~30.0.0",
-    "@types/node": "^24.0.0",
+    "@types/node": "^24.13.3",
+    "@types/pg": "^8.20.4",
+    "drizzle-kit": "^1.0.0-rc.4",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
     "jest": "~30.3.0",
@@ -32,6 +34,7 @@
     "ts-jest": "^29.4.7",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
+    "tsx": "^4.23.10",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.58.0",
     "webpack": "^5.101.3",
@@ -50,6 +53,9 @@
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
     "axios": "^1.6.0",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
+    "pg": "^8.22.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.0"
   }
