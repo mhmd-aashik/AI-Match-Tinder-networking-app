@@ -23,7 +23,7 @@
     "@types/jest": "~30.0.0",
     "@types/node": "^24.13.3",
     "@types/pg": "^8.20.4",
-    "drizzle-kit": "^1.0.0-rc.4",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
     "jest": "~30.3.0",

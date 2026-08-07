@@ -1,18 +1,17 @@
-/// <reference types="node" />
-import 'dotenv/config';
+import { config } from 'dotenv';
 import { defineConfig } from 'drizzle-kit';
 
-const databaseUrl = process.env.DATABASE_URL;
-
-if (!databaseUrl) {
-  throw new Error('DATABASE_URL is not defined');
-}
+config({
+  path: './user-service/.env',
+});
 
 export default defineConfig({
-  schema: './user-service/src/app/db/schema.ts',
+  schema: './user-service/src/app/database/schema.ts',
   out: './user-service/drizzle',
+
   dialect: 'postgresql',
+
   dbCredentials: {
-    url: databaseUrl,
+    url: process.env.DATABASE_URL as string,
   },
 });

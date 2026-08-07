@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: tinder-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tinder_users
+    ports:
+      - '5432:5432'
+    volumes:
+      - tinder_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  tinder_postgres_data:
