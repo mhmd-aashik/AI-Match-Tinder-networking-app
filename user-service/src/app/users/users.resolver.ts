@@ -3,6 +3,8 @@ import { UsersService } from './users.service';
 import { User } from './user.model';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import type { AuthUser } from '../auth/auth-user.type';
+import { CurrentUser } from '../auth/current-user.decorator';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -22,8 +24,11 @@ export class UsersResolver {
   }
 
   @Mutation(() => User)
-  async createUser(@Args('input') input: CreateUserInput) {
-    return this.usersService.create(input);
+  async createUser(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: CreateUserInput,
+  ) {
+    return this.usersService.create(user.id, input);
   }
 
   @Mutation(() => User, { nullable: true })

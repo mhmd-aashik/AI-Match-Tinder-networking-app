@@ -32,8 +32,11 @@ export class UsersService {
     return user;
   }
 
-  async create(input: CreateUserInput) {
-    const result = await this.drizzleDb.insert(users).values(input).returning();
+  async create(keycloakId: string, input: CreateUserInput) {
+    const result = await this.drizzleDb
+      .insert(users)
+      .values({ ...input, keycloakId })
+      .returning();
 
     return result[0];
   }
