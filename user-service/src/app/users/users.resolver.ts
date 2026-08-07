@@ -1,4 +1,11 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './models/user.model';
 import { CreateUserInput } from './dto/create-user.input';
@@ -7,6 +14,7 @@ import type { AuthUser } from '../auth/auth-user.type';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gql-auth.guard';
+import { UserImage } from './models/user-image.model';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -45,5 +53,10 @@ export class UsersResolver {
   @Mutation(() => User, { nullable: true })
   async deleteUser(@Args('id') id: string) {
     return this.usersService.remove(id);
+  }
+
+  @ResolveField(() => [UserImage])
+  async images(@Parent() user: User) {
+    return this.usersService.findImagesByUserId(user.id);
   }
 }
