@@ -33,7 +33,6 @@ type Mutation {
 }
 
 input CreateUserInput {
-  keycloakId: String!
   displayName: String!
   bio: String
   dateOfBirth: String!
@@ -44,7 +43,6 @@ input CreateUserInput {
 }
 
 input UpdateUserInput {
-  keycloakId: String
   displayName: String
   bio: String
   dateOfBirth: String

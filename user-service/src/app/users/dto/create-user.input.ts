@@ -11,10 +11,6 @@ import {
 export class CreateUserInput {
   @Field()
   @IsString()
-  keycloakId!: string;
-
-  @Field()
-  @IsString()
   @Length(2, 100)
   displayName!: string;
 
