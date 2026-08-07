@@ -41,7 +41,9 @@
   "workspaces": [
     "packages/*",
     "api-gateway",
-    "api-gateway-e2e"
+    "api-gateway-e2e",
+    "user-service",
+    "user-service-e2e"
   ],
   "dependencies": {
     "@nestjs/common": "^11.0.0",

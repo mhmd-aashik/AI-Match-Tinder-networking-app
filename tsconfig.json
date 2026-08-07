@@ -8,6 +8,12 @@
     },
     {
       "path": "./api-gateway"
+    },
+    {
+      "path": "./user-service-e2e"
+    },
+    {
+      "path": "./user-service"
     }
   ],
   "compilerOptions": {}
