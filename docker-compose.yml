@@ -12,5 +12,33 @@ services:
     volumes:
       - tinder_postgres_data:/var/lib/postgresql/data
 
+  keycloak-db:
+    image: postgres:17
+    container_name: tinder-keycloak-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+      POSTGRES_DB: keycloak
+    volumes:
+      - tinder_keycloak_db_data:/var/lib/postgresql/data
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4
+    container_name: tinder-keycloak
+    command: start-dev
+    depends_on:
+      - keycloak-db
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+    ports:
+      - '8080:8080'
 volumes:
   tinder_postgres_data:
+  tinder_keycloak_db_data:
