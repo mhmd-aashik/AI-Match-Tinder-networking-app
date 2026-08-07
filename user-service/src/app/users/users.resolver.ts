@@ -71,4 +71,15 @@ export class UsersResolver {
 
     return this.usersService.addImage(user.id, input);
   }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => UserImage)
+  async deleteProfileImage(
+    @CurrentUser() authUser: AuthUser,
+    @Args('imageId') imageId: string,
+  ) {
+    const user = await this.usersService.findByKeycloakId(authUser.id);
+
+    return this.usersService.deleteImage(user.id, imageId);
+  }
 }

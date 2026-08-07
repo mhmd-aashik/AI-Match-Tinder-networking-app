@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { DRIZZLE_DB, type DrizzleDB } from '../database/database.module';
 import { userImages, users } from '../database';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { CreateUserImageInput } from './dto/create-user-image.input';
@@ -102,5 +102,18 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async deleteImage(userId: string, imageId: string) {
+    const [image] = await this.drizzleDb
+      .delete(userImages)
+      .where(and(eq(userImages.id, imageId), eq(userImages.userId, userId)))
+      .returning();
+
+    if (!image) {
+      throw new NotFoundException('Profile image not found');
+    }
+
+    return image;
   }
 }
