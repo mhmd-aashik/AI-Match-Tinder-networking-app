@@ -14,6 +14,12 @@
     },
     {
       "path": "./user-service"
+    },
+    {
+      "path": "./match-service-e2e"
+    },
+    {
+      "path": "./match-service"
     }
   ],
   "compilerOptions": {}

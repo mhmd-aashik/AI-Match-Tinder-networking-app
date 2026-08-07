@@ -48,7 +48,9 @@
     "api-gateway",
     "api-gateway-e2e",
     "user-service",
-    "user-service-e2e"
+    "user-service-e2e",
+    "match-service",
+    "match-service-e2e"
   ],
   "dependencies": {
     "@apollo/server": "^5.5.1",
