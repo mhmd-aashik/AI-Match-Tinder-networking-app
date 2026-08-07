@@ -39,6 +39,21 @@ services:
       KC_DB_PASSWORD: keycloak
     ports:
       - '8080:8080'
+
+  match-postgres:
+    image: postgres:17
+    container_name: tinder-match-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tinder_matches
+    ports:
+      - '5433:5432'
+    volumes:
+      - tinder_match_postgres_data:/var/lib/postgresql/data
+      
 volumes:
   tinder_postgres_data:
   tinder_keycloak_db_data:
+  tinder_match_postgres_data:
