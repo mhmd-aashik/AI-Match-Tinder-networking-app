@@ -44,4 +44,13 @@ export class UsersService {
 
     return user;
   }
+
+  async remove(id: string) {
+    const [user] = await this.drizzleDb
+      .delete(users)
+      .where(eq(users.id, id))
+      .returning();
+
+    return user;
+  }
 }

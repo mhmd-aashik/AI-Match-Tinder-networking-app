@@ -28,6 +28,8 @@ type Query {
 
 type Mutation {
   createUser(input: CreateUserInput!): User!
+  updateUser(id: String!, input: UpdateUserInput!): User
+  deleteU: User
 }
 
 input CreateUserInput {
@@ -35,6 +37,17 @@ input CreateUserInput {
   displayName: String!
   bio: String
   dateOfBirth: String!
+  gender: String
+  city: String
+  country: String
+  profileImageUrl: String
+}
+
+input UpdateUserInput {
+  keycloakId: String
+  displayName: String
+  bio: String
+  dateOfBirth: String
   gender: String
   city: String
   country: String
