@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { DRIZZLE_DB, type DrizzleDB } from '../database/database.module';
-import { users } from '../database/schema';
+import { users } from '../database';
 import { eq } from 'drizzle-orm';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';

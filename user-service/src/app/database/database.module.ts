@@ -2,8 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
-import * as schema from './schema';
-
+import * as schema from './index';
 export const DRIZZLE_DB = 'DRIZZLE_DB';
 export type DrizzleDB = ReturnType<typeof drizzle<typeof schema>>;
 
