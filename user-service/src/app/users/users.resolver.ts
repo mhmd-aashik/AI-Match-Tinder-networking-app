@@ -9,8 +9,11 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Query(() => [User])
-  async users() {
-    return this.usersService.findAll();
+  async users(
+    @Args('page', { type: () => Number, defaultValue: 1 }) page: number,
+    @Args('limit', { type: () => Number, defaultValue: 10 }) limit: number,
+  ) {
+    return this.usersService.findAll(page, limit);
   }
 
   @Query(() => User, { nullable: true })

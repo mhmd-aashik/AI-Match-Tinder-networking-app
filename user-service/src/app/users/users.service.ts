@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { DRIZZLE_DB, type DrizzleDB } from '../database/database.module';
 import { users } from '../database/schema';
 import { eq } from 'drizzle-orm';
@@ -12,8 +12,10 @@ export class UsersService {
     private readonly drizzleDb: DrizzleDB,
   ) {}
 
-  async findAll() {
-    return this.drizzleDb.select().from(users);
+  async findAll(page: number, limit: number) {
+    const offset = (page - 1) * limit;
+
+    return this.drizzleDb.select().from(users).limit(limit).offset(offset);
   }
 
   async findById(id: string) {
@@ -22,6 +24,10 @@ export class UsersService {
       .from(users)
       .where(eq(users.id, id))
       .limit(1);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
     return user;
   }
@@ -42,6 +48,10 @@ export class UsersService {
       .where(eq(users.id, id))
       .returning();
 
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
     return user;
   }
 
@@ -50,6 +60,10 @@ export class UsersService {
       .delete(users)
       .where(eq(users.id, id))
       .returning();
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
     return user;
   }
