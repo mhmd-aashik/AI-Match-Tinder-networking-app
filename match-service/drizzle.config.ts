@@ -6,7 +6,7 @@ config({
 });
 
 export default defineConfig({
-  schema: './match-service/src/app/db/schema/*.ts',
+  schema: './match-service/src/app/database/schema/*.ts',
   out: './match-service/drizzle',
   dialect: 'postgresql',
   dbCredentials: {
