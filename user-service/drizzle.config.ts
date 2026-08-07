@@ -6,7 +6,7 @@ config({
 });
 
 export default defineConfig({
-  schema: './user-service/src/app/database/schema.ts',
+  schema: './user-service/src/app/database/schema/*.ts',
   out: './user-service/drizzle',
 
   dialect: 'postgresql',
