@@ -15,6 +15,7 @@ import { CurrentUser } from '../auth/current-user.decorator';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gql-auth.guard';
 import { UserImage } from './models/user-image.model';
+import { CreateUserImageInput } from './dto/create-user-image.input';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -58,5 +59,16 @@ export class UsersResolver {
   @ResolveField(() => [UserImage])
   async images(@Parent() user: User) {
     return this.usersService.findImagesByUserId(user.id);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => UserImage)
+  async addProfileImage(
+    @CurrentUser() authUser: AuthUser,
+    @Args('input') input: CreateUserImageInput,
+  ) {
+    const user = await this.usersService.findByKeycloakId(authUser.id);
+
+    return this.usersService.addImage(user.id, input);
   }
 }

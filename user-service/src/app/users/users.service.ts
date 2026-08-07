@@ -4,6 +4,7 @@ import { userImages, users } from '../database';
 import { eq } from 'drizzle-orm';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { CreateUserImageInput } from './dto/create-user-image.input';
 
 @Injectable()
 export class UsersService {
@@ -76,5 +77,30 @@ export class UsersService {
       .select()
       .from(userImages)
       .where(eq(userImages.userId, userId));
+  }
+
+  async addImage(userId: string, input: CreateUserImageInput) {
+    const [image] = await this.drizzleDb
+      .insert(userImages)
+      .values({
+        userId,
+        ...input,
+      })
+      .returning();
+
+    return image;
+  }
+
+  async findByKeycloakId(keycloakId: string) {
+    const [user] = await this.drizzleDb
+      .select()
+      .from(users)
+      .where(eq(users.keycloakId, keycloakId));
+
+    if (!user) {
+      throw new NotFoundException('User profile not found');
+    }
+
+    return user;
   }
 }
