@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
+import { AiEventsController } from './events/ai-events.controller';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { DatabaseModule } from './database/database.module';
 
     DatabaseModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AiEventsController],
   providers: [AppService],
 })
 export class AppModule {}
