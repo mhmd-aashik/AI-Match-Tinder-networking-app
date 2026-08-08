@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DRIZZLE_DB, type DrizzleDB } from '../database/database.module';
 import { CreateSwipeInput } from './dto/create-swipe.input';
-import { swipes } from '../database';
+import { matches, swipes } from '../database';
+import { and, eq } from 'drizzle-orm';
 
 @Injectable()
 export class MatchService {
@@ -20,6 +21,42 @@ export class MatchService {
       })
       .returning();
 
-    return swipe;
+    if (input.action !== 'like') {
+      return {
+        swipe,
+        match: null,
+      };
+    }
+
+    const [reverseLike] = await this.drizzleDb
+      .select()
+      .from(swipes)
+      .where(
+        and(
+          eq(swipes.swiperUserId, input.targetUserId),
+          eq(swipes.targetUserId, swiperUserId),
+          eq(swipes.action, 'like'),
+        ),
+      );
+
+    if (!reverseLike) {
+      return {
+        swipe,
+        match: null,
+      };
+    }
+
+    const [match] = await this.drizzleDb
+      .insert(matches)
+      .values({
+        userOneId: swiperUserId,
+        userTwoId: input.targetUserId,
+      })
+      .returning();
+
+    return {
+      swipe,
+      match,
+    };
   }
 }
