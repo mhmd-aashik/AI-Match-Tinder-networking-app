@@ -26,6 +26,12 @@
     },
     {
       "path": "./ai-service"
+    },
+    {
+      "path": "./chat-service-e2e"
+    },
+    {
+      "path": "./chat-service"
     }
   ],
   "compilerOptions": {}
