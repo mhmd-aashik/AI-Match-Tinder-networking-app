@@ -74,8 +74,22 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+  
+  chat-postgres:
+    image: postgres:17
+    container_name: tinder-chat-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tinder_chat
+    ports:
+      - '5434:5432'
+    volumes:
+      - tinder_chat_postgres_data:/var/lib/postgresql/data
 
 volumes:
   tinder_postgres_data:
   tinder_keycloak_db_data:
   tinder_match_postgres_data:
+  tinder_chat_postgres_data:
