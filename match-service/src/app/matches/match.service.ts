@@ -3,12 +3,16 @@ import { DRIZZLE_DB, type DrizzleDB } from '../database/database.module';
 import { CreateSwipeInput } from './dto/create-swipe.input';
 import { matches, swipes } from '../database';
 import { and, eq } from 'drizzle-orm';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class MatchService {
   constructor(
     @Inject(DRIZZLE_DB)
     private readonly drizzleDb: DrizzleDB,
+
+    @Inject('KAFKA_SERVICE')
+    private readonly kafkaClient: ClientKafka,
   ) {}
 
   async createSwipe(swiperUserId: string, input: CreateSwipeInput) {
@@ -63,6 +67,15 @@ export class MatchService {
       })
       .onConflictDoNothing()
       .returning();
+
+    if (match) {
+      this.kafkaClient.emit('match.created', {
+        matchId: match.id,
+        userOneId: userOneId,
+        userTwoId: userTwoId,
+        createdAt: match.createdAt,
+      });
+    }
 
     return {
       swipe,
