@@ -25,7 +25,7 @@ export class AiService {
     },
   ): Promise<string> {
     const response = await this.googleGenAI.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.6-flash',
       contents: `
         Two users just matched.
   

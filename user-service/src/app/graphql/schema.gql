@@ -40,6 +40,7 @@ type Mutation {
   updateUser(id: String!, input: UpdateUserInput!): User
   deleteUser(id: String!): User
   addProfileImage(input: CreateUserImageInput!): UserImage!
+  deleteProfileImage(imageId: String!): UserImage!
 }
 
 input CreateUserInput {
