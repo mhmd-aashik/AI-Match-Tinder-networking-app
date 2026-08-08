@@ -69,12 +69,21 @@ export class MatchService {
       .returning();
 
     if (match) {
+      console.log('1. MATCH CREATED:', match);
+      console.log('2. PUBLISHING match.created:', {
+        matchId: match.id,
+        userOneId: userOneId,
+        userTwoId: userTwoId,
+        createdAt: match.createdAt,
+      });
+
       this.kafkaClient.emit('match.created', {
         matchId: match.id,
         userOneId: userOneId,
         userTwoId: userTwoId,
         createdAt: match.createdAt,
       });
+      console.log('3. KAFKA EVENT PUBLISHED');
     }
 
     return {
