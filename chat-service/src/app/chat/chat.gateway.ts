@@ -5,7 +5,8 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
+import { ChatService } from './chat.service';
 
 @WebSocketGateway({
   cors: {
@@ -13,8 +14,11 @@ import { Socket } from 'socket.io';
   },
 })
 export class ChatGateway {
+  constructor(private readonly chatService: ChatService) {}
+
   @WebSocketServer()
-  // server: Server;
+  server!: Server;
+
   handleConnection(client: Socket) {
     console.log('Client connected:', client.id);
   }
@@ -39,5 +43,27 @@ export class ChatGateway {
     client.emit('conversationJoined', {
       conversationId: data.conversationId,
     });
+  }
+
+  @SubscribeMessage('sendMessage')
+  async sendMessage(
+    @MessageBody()
+    data: {
+      conversationId: string;
+      senderUserId: string;
+      content: string;
+    },
+  ) {
+    const message = await this.chatService.createMessage(
+      data.conversationId,
+      data.senderUserId,
+      data.content,
+    );
+
+    this.server
+      .to(`conversation:${data.conversationId}`)
+      .emit('messageReceived', message);
+
+    return message;
   }
 }
