@@ -10,22 +10,37 @@ export class AiService {
     });
   }
 
-  async generateIceBreaker(
-    userOneId: string,
-    userTwoId: string,
+  async generateIcebreaker(
+    userOne: {
+      displayName: string;
+      bio?: string | null;
+      city?: string | null;
+      country?: string | null;
+    },
+    userTwo: {
+      displayName: string;
+      bio?: string | null;
+      city?: string | null;
+      country?: string | null;
+    },
   ): Promise<string> {
-    // // Temporary 🤖
-    // return `Start a conversation by asking about a shared interest or recent project.`;
     const response = await this.googleGenAI.models.generateContent({
-      model: 'gemini-3.6-flash',
+      model: 'gemini-2.5-flash',
       contents: `
         Two users just matched.
-
-        User 1 ID: ${userOneId}
-        User 2 ID: ${userTwoId}
-
-        Generate one short, friendly conversation starter.
-        Keep it natural and under 20 words.
+  
+        User one:
+        Name: ${userOne.displayName}
+        Bio: ${userOne.bio ?? 'Not provided'}
+        Location: ${userOne.city ?? ''} ${userOne.country ?? ''}
+  
+        User two:
+        Name: ${userTwo.displayName}
+        Bio: ${userTwo.bio ?? 'Not provided'}
+        Location: ${userTwo.city ?? ''} ${userTwo.country ?? ''}
+  
+        Generate one short, friendly conversation starter
+        based only on the profile information above.
       `,
     });
 
