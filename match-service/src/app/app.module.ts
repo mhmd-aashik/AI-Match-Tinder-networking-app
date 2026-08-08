@@ -6,6 +6,7 @@ import { DatabaseModule } from './database/database.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MatchModule } from './matches/match.module';
+import { KafkaModule } from './kafka/kafka.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MatchModule } from './matches/match.module';
 
     DatabaseModule,
     MatchModule,
+    KafkaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
