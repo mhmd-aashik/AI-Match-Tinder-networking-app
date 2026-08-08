@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { AiEventsController } from './events/ai-events.controller';
 import { ChatModule } from './chat/chat.module';
+import { MatchEventsController } from './events/match-events.controller';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { ChatModule } from './chat/chat.module';
     DatabaseModule,
     ChatModule,
   ],
-  controllers: [AppController, AiEventsController],
+  controllers: [AppController, AiEventsController, MatchEventsController],
   providers: [AppService],
 })
 export class AppModule {}
