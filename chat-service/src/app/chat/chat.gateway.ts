@@ -23,13 +23,21 @@ export class ChatGateway {
     console.log('Client disconnected:', client.id);
   }
 
-  @SubscribeMessage('ping')
-  handlePing(
-    @MessageBody() message: string,
-    @ConnectedSocket() client: Socket,
+  @SubscribeMessage('joinConversation')
+  async joinConversation(
+    @MessageBody()
+    data: {
+      conversationId: string;
+    },
+    @ConnectedSocket()
+    client: Socket,
   ) {
-    client.emit('pong', {
-      message,
+    const room = `conversation:${data.conversationId}`;
+
+    await client.join(room);
+
+    client.emit('conversationJoined', {
+      conversationId: data.conversationId,
     });
   }
 }
