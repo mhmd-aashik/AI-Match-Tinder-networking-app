@@ -19,6 +19,13 @@ export class MatchService {
         targetUserId: input.targetUserId,
         action: input.action as 'like' | 'pass',
       })
+      .onConflictDoUpdate({
+        target: [swipes.swiperUserId, swipes.targetUserId],
+        set: {
+          action: input.action as 'like' | 'pass',
+          createdAt: new Date(),
+        },
+      })
       .returning();
 
     if (input.action !== 'like') {
