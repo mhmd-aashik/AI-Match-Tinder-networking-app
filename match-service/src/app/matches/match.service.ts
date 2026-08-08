@@ -46,12 +46,15 @@ export class MatchService {
       };
     }
 
+    const [userOneId, userTwoId] = [swiperUserId, input.targetUserId].sort();
+
     const [match] = await this.drizzleDb
       .insert(matches)
       .values({
-        userOneId: swiperUserId,
-        userTwoId: input.targetUserId,
+        userOneId,
+        userTwoId,
       })
+      .onConflictDoNothing()
       .returning();
 
     return {

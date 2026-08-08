@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Swipe } from './models/swipe.model';
 import { CreateSwipeInput } from './dto/create-swipe.input';
 import { MatchService } from './match.service';
+import { SwipeResult } from './models/swipe-result.model';
 
 @Resolver()
 export class MatchResolver {
@@ -12,7 +12,7 @@ export class MatchResolver {
     return 'Match service running';
   }
 
-  @Mutation(() => Swipe)
+  @Mutation(() => SwipeResult)
   async swipe(
     @Args('swiperUserId') swiperUserId: string,
     @Args('input') input: CreateSwipeInput,

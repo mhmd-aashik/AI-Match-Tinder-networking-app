@@ -2,11 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Swipe {
+type Match {
   id: ID!
-  swiperUserId: ID!
-  targetUserId: ID!
-  action: String!
+  userOneId: ID!
+  userTwoId: ID!
   createdAt: DateTime!
 }
 
@@ -15,12 +14,25 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Swipe {
+  id: ID!
+  swiperUserId: ID!
+  targetUserId: ID!
+  action: String!
+  createdAt: DateTime!
+}
+
+type SwipeResult {
+  swipe: Swipe!
+  match: Match
+}
+
 type Query {
   matchServiceStatus: String!
 }
 
 type Mutation {
-  swipe(swiperUserId: String!, input: CreateSwipeInput!): Swipe!
+  swipe(swiperUserId: String!, input: CreateSwipeInput!): SwipeResult!
 }
 
 input CreateSwipeInput {
