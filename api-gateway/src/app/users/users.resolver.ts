@@ -3,6 +3,8 @@ import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from './user.model';
 import { UserServiceClient } from './user-service.client';
 import { CreateUserInput } from './dto/create-user.input';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../auth/gql-auth.guard';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -13,17 +15,23 @@ export class UsersResolver {
     return this.userServiceClient.getUsers();
   }
 
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
   async createUser(
     @Args('input') input: CreateUserInput,
-    @Context() context: { req: { headers: { authorization?: string } } },
+
+    @Context()
+    context: {
+      req: {
+        headers: {
+          authorization?: string;
+        };
+      };
+    },
   ) {
-    const authorization = context.req.headers.authorization;
-
-    if (!authorization) {
-      throw new Error('Authorization header is required');
-    }
-
-    return this.userServiceClient.createUser(authorization, input);
+    return this.userServiceClient.createUser(
+      context.req.headers.authorization ?? '',
+      input,
+    );
   }
 }
