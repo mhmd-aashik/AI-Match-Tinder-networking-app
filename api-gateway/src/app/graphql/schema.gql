@@ -12,6 +12,31 @@ type User {
   profileImageUrl: String
 }
 
+type Match {
+  id: ID!
+  userOneId: ID!
+  userTwoId: ID!
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Swipe {
+  id: ID!
+  swiperUserId: ID!
+  targetUserId: ID!
+  action: String!
+  createdAt: DateTime!
+}
+
+type SwipeResult {
+  swipe: Swipe!
+  match: Match
+}
+
 type Query {
   gatewayStatus: String!
   users: [User!]!
@@ -19,6 +44,7 @@ type Query {
 
 type Mutation {
   createUser(input: CreateUserInput!): User!
+  swipe(input: CreateSwipeInput!): SwipeResult!
 }
 
 input CreateUserInput {
@@ -29,4 +55,14 @@ input CreateUserInput {
   city: String
   country: String
   profileImageUrl: String
+}
+
+input CreateSwipeInput {
+  targetUserId: String!
+  action: SwipeAction!
+}
+
+enum SwipeAction {
+  LIKE
+  PASS
 }
