@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { DRIZZLE_DB, type DrizzleDB } from '../database/database.module';
 import { conversations, messages } from '../database';
-import { and, eq, or } from 'drizzle-orm';
+import { and, desc, eq, or } from 'drizzle-orm';
 
 @Injectable()
 export class ChatService {
@@ -42,5 +42,23 @@ export class ChatService {
       );
 
     return conversation;
+  }
+
+  async findConversationById(id: string) {
+    const [conversation] = await this.drizzleDb
+      .select()
+      .from(conversations)
+      .where(eq(conversations.id, id));
+
+    return conversation;
+  }
+
+  async findMessagesByConversationId(conversationId: string, limit = 20) {
+    return this.drizzleDb
+      .select()
+      .from(messages)
+      .where(eq(messages.conversationId, conversationId))
+      .orderBy(desc(messages.createdAt))
+      .limit(limit);
   }
 }
