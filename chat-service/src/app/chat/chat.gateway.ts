@@ -86,13 +86,29 @@ export class ChatGateway {
     @MessageBody()
     data: {
       conversationId: string;
-      senderUserId: string;
       content: string;
     },
+    @ConnectedSocket()
+    client: Socket,
   ) {
+    const userId = client.data.user.id;
+
+    const conversation = await this.chatService.findConversationForUser(
+      data.conversationId,
+      userId,
+    );
+
+    if (!conversation) {
+      client.emit('conversationError', {
+        message: 'You are not part of this conversation',
+      });
+
+      return;
+    }
+
     const message = await this.chatService.createMessage(
       data.conversationId,
-      data.senderUserId,
+      userId,
       data.content,
     );
 
