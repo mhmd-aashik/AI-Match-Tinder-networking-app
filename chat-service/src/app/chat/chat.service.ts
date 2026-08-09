@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { DRIZZLE_DB, type DrizzleDB } from '../database/database.module';
-import { conversations, messages } from '../database';
+import { aiIcebreakers, conversations, messages } from '../database';
 import { and, desc, eq, or } from 'drizzle-orm';
 
 @Injectable()
@@ -73,5 +73,16 @@ export class ChatService {
         ),
       )
       .orderBy(desc(conversations.createdAt));
+  }
+
+  async findIcebreakerByMatchId(matchId: string) {
+    const [icebreaker] = await this.drizzleDb
+      .select()
+      .from(aiIcebreakers)
+      .where(eq(aiIcebreakers.matchId, matchId))
+      .orderBy(desc(aiIcebreakers.createdAt))
+      .limit(1);
+
+    return icebreaker;
   }
 }

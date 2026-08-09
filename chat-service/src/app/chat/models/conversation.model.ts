@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Message } from './message.model';
+import { AiIcebreaker } from './ai-icebreaker.model';
 
 @ObjectType()
 export class Conversation {
@@ -20,4 +21,9 @@ export class Conversation {
 
   @Field(() => [Message], { nullable: true })
   messages?: Message[];
+
+  @Field(() => AiIcebreaker, {
+    nullable: true,
+  })
+  icebreaker?: AiIcebreaker | null;
 }
