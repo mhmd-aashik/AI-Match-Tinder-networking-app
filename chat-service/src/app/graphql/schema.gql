@@ -1,0 +1,29 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Message {
+  id: ID!
+  conversationId: ID!
+  senderUserId: ID!
+  content: String!
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Conversation {
+  id: ID!
+  matchId: ID!
+  userOneId: ID!
+  userTwoId: ID!
+  createdAt: DateTime!
+  messages: [Message!]
+}
+
+type Query {
+  conversation(id: String!): Conversation
+}
