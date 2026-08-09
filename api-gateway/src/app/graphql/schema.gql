@@ -15,3 +15,17 @@ type Query {
   gatewayStatus: String!
   users: [User!]!
 }
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+}
+
+input CreateUserInput {
+  displayName: String!
+  bio: String
+  dateOfBirth: String!
+  gender: String
+  city: String
+  country: String
+  profileImageUrl: String
+}
