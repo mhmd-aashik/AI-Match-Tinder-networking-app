@@ -6,6 +6,9 @@ export class User {
   id!: string;
 
   @Field()
+  keycloakId!: string;
+
+  @Field()
   displayName!: string;
 
   @Field({ nullable: true })

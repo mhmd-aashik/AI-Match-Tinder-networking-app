@@ -34,12 +34,24 @@ export class UsersService {
   }
 
   async create(keycloakId: string, input: CreateUserInput) {
-    const result = await this.drizzleDb
+    const [existingUser] = await this.drizzleDb
+      .select()
+      .from(users)
+      .where(eq(users.keycloakId, keycloakId));
+
+    if (existingUser) {
+      return existingUser;
+    }
+
+    const [user] = await this.drizzleDb
       .insert(users)
-      .values({ ...input, keycloakId })
+      .values({
+        ...input,
+        keycloakId,
+      })
       .returning();
 
-    return result[0];
+    return user;
   }
 
   async update(id: string, input: UpdateUserInput) {

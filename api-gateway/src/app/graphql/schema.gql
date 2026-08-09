@@ -4,6 +4,7 @@
 
 type User {
   id: ID!
+  keycloakId: String!
   displayName: String!
   bio: String
   city: String
