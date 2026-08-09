@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { DRIZZLE_DB, type DrizzleDB } from '../database/database.module';
-import { messages } from '../database';
+import { conversations, messages } from '../database';
+import { and, eq, or } from 'drizzle-orm';
 
 @Injectable()
 export class ChatService {
@@ -24,5 +25,22 @@ export class ChatService {
       .returning();
 
     return message;
+  }
+
+  async findConversationForUser(conversationId: string, userId: string) {
+    const [conversation] = await this.drizzleDb
+      .select()
+      .from(conversations)
+      .where(
+        and(
+          eq(conversations.id, conversationId),
+          or(
+            eq(conversations.userOneId, userId),
+            eq(conversations.userTwoId, userId),
+          ),
+        ),
+      );
+
+    return conversation;
   }
 }
