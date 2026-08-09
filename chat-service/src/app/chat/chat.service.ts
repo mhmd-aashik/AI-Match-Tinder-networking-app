@@ -61,4 +61,17 @@ export class ChatService {
       .orderBy(desc(messages.createdAt))
       .limit(limit);
   }
+
+  async findConversationsForUser(userId: string) {
+    return this.drizzleDb
+      .select()
+      .from(conversations)
+      .where(
+        or(
+          eq(conversations.userOneId, userId),
+          eq(conversations.userTwoId, userId),
+        ),
+      )
+      .orderBy(desc(conversations.createdAt));
+  }
 }
