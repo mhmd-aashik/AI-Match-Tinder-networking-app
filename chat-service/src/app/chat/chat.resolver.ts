@@ -6,6 +6,7 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/gql-auth.guard';
 import type { AuthUser } from '../auth/auth-user.type';
 import { CurrentUser } from '../auth/current-user.decorator';
+import { AiIcebreaker } from './models/ai-icebreaker.model';
 
 @Resolver(() => Conversation)
 export class ChatResolver {
@@ -26,5 +27,12 @@ export class ChatResolver {
   @Query(() => [Conversation])
   async myConversations(@CurrentUser() user: AuthUser) {
     return this.chatService.findConversationsForUser(user.id);
+  }
+
+  @ResolveField(() => AiIcebreaker, {
+    nullable: true,
+  })
+  async icebreaker(@Parent() conversation: Conversation) {
+    return this.chatService.findIcebreakerByMatchId(conversation.matchId);
   }
 }
