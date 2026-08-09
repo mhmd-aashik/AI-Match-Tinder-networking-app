@@ -7,6 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ChatService } from './chat.service';
+import { SocketAuthService } from '../auth/socket-auth.service';
 
 @WebSocketGateway({
   cors: {
@@ -14,13 +15,33 @@ import { ChatService } from './chat.service';
   },
 })
 export class ChatGateway {
-  constructor(private readonly chatService: ChatService) {}
+  constructor(
+    private readonly chatService: ChatService,
+    private readonly socketAuthService: SocketAuthService,
+  ) {}
 
   @WebSocketServer()
   server!: Server;
 
-  handleConnection(client: Socket) {
-    console.log('Client connected:', client.id);
+  async handleConnection(client: Socket) {
+    try {
+      const token =
+        client.handshake.auth?.token ??
+        client.handshake.headers.authorization?.replace('Bearer ', '');
+
+      if (!token) {
+        client.disconnect();
+        return;
+      }
+
+      const user = await this.socketAuthService.verifyToken(token);
+
+      client.data.user = user;
+
+      console.log('Authenticated socket user:', user.id);
+    } catch {
+      client.disconnect();
+    }
   }
 
   handleDisconnect(client: Socket) {
