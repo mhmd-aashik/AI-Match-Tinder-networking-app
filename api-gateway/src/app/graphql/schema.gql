@@ -2,6 +2,16 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  id: ID!
+  displayName: String!
+  bio: String
+  city: String
+  country: String
+  profileImageUrl: String
+}
+
 type Query {
   gatewayStatus: String!
+  users: [User!]!
 }
