@@ -57,6 +57,21 @@ export class ChatGateway {
     @ConnectedSocket()
     client: Socket,
   ) {
+    const userId = client.data.user.id;
+
+    const conversation = await this.chatService.findConversationForUser(
+      data.conversationId,
+      userId,
+    );
+
+    if (!conversation) {
+      client.emit('conversationError', {
+        message: 'You are not part of this conversation',
+      });
+
+      return;
+    }
+
     const room = `conversation:${data.conversationId}`;
 
     await client.join(room);
