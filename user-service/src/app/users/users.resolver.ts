@@ -34,6 +34,15 @@ export class UsersResolver {
     return this.usersService.findById(id);
   }
 
+  @Query(() => User, { nullable: true })
+  async userByKeycloakId(@Args('keycloakId') keycloakId: string) {
+    try {
+      return await this.usersService.findByKeycloakId(keycloakId);
+    } catch {
+      return null;
+    }
+  }
+
   @UseGuards(GqlAuthGuard)
   @Mutation(() => User)
   async createUser(

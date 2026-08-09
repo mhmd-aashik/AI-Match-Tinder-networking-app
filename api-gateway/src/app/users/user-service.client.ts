@@ -10,8 +10,10 @@ export class UserServiceClient {
      query {
        users(page: 1, limit: 10) {
          id
+         keycloakId
          displayName
          bio
+         dateOfBirth
          city
          country
          profileImageUrl
@@ -28,6 +30,33 @@ export class UserServiceClient {
     }
 
     return response.data.data.users;
+  }
+
+  async getUserByKeycloakId(keycloakId: string) {
+    const query = `
+      query UserByKeycloakId($keycloakId: String!) {
+        userByKeycloakId(keycloakId: $keycloakId) {
+          id
+          keycloakId
+          displayName
+        }
+      }
+    `;
+
+    const response = await axios.post(this.endpoint, {
+      query,
+      variables: { keycloakId },
+    });
+
+    if (response.data.errors) {
+      throw new Error(response.data.errors[0]?.message ?? 'User service error');
+    }
+
+    return response.data.data.userByKeycloakId as {
+      id: string;
+      keycloakId: string;
+      displayName: string;
+    } | null;
   }
 
   async createUser(

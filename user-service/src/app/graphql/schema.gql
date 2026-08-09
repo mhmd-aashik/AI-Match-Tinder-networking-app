@@ -33,6 +33,7 @@ type User {
 type Query {
   users(page: Float! = 1, limit: Float! = 10): [User!]!
   user(id: String!): User
+  userByKeycloakId(keycloakId: String!): User
 }
 
 type Mutation {

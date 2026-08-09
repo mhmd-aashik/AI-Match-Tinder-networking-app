@@ -11,6 +11,9 @@ export class User {
   @Field()
   displayName!: string;
 
+  @Field()
+  dateOfBirth!: string;
+
   @Field({ nullable: true })
   bio?: string;
 
